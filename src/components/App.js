@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-
+import axios from 'axios'
 import './App.css';
 
 import Header from './Header/Header';
 import Compose from './Compose/Compose';
+import Post from './Post/Post'
 
 class App extends Component {
   constructor() {
@@ -19,7 +20,13 @@ class App extends Component {
   }
   
   componentDidMount() {
-
+    let promise = axios.get('https://practiceapi.devmountain.com/api/posts')
+    promise.then(res => {
+      this.setState({posts: res.data})
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   updatePost() {
@@ -44,6 +51,12 @@ class App extends Component {
         <section className="App__content">
 
           <Compose />
+
+          {
+            posts.map( post => (
+              <Post key={ post.id } />
+            ))
+          }
           
         </section>
       </div>
